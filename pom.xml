@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <modelVersion>4.0.0</modelVersion>
+  <name>EnContRA 3D</name>
+  <packaging>pom</packaging>
+  <groupId>pt.inevo.encontra</groupId>
+  <artifactId>encontra-3d</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <parent>
+    <groupId>pt.inevo.encontra</groupId>
+    <artifactId>encontra</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <modules>
+    <module>encontra-3d-core</module>
+    <module>encontra-3d-descriptors</module>
+  </modules>
+
+</project>
+
