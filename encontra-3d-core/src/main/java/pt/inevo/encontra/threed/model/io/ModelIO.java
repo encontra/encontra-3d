@@ -17,7 +17,6 @@ import java.io.IOException;
  */
 public final class ModelIO extends Object {
 	public enum OutputFormat {
-		ThOR_JAVA,
 		OBJ,
 		OFF
 	}
@@ -77,43 +76,10 @@ public final class ModelIO extends Object {
 		if(output == null)
 			throw new IllegalArgumentException("ModelIO: Argument cannot be null");
 
-		if(format == OutputFormat.ThOR_JAVA) {
-			(new ModelWriterThorCode()).write(model, output);
-			return true;
-		} else if(format == OutputFormat.OBJ) {
+		if(format == OutputFormat.OBJ) {
 			(new ModelWriterObj()).write(model, output);
 			return true;
 		} else if(format == OutputFormat.OFF) {
-			(new ModelWriterOff()).write(model, output);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Writes an image using an arbitrary ImageWriter that supports the given format to a File.
-	 * If there is already a File present, its contents are discarded.
-	 *
-	 * @param model - a Model to be written.
-	 * @param formatName - a String containing the informal name of the format.
-	 * @param output - a File to be written to.
-	 * @return
-	 * false if no appropriate writer is found.
-	 * @throws IllegalArgumentException - if any parameter is null.
-	 * @throws java.io.IOException - if an error occurs during writing.
-	 */
-	public static boolean write(Model model, String formatName, File output) throws IOException, IllegalArgumentException {
-		if(output == null)
-			throw new IllegalArgumentException("ModelIO: Argument cannot be null");
-		
-		if(formatName.equals("java")) {
-			(new ModelWriterThorCode()).write(model, output);
-			return true;
-		} else if(formatName.equals("obj")) {
-			(new ModelWriterObj()).write(model, output);
-			return true;
-		} else if(formatName.equals("off")) {
 			(new ModelWriterOff()).write(model, output);
 			return true;
 		} else {

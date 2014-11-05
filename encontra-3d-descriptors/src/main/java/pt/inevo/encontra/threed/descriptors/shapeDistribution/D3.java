@@ -10,7 +10,6 @@ import pt.inevo.encontra.threed.Model;
 import pt.inevo.encontra.threed.Point3D;
 import pt.inevo.encontra.threed.Vector3D;
 import pt.inevo.encontra.threed.descriptors.Histogram;
-import pt.inevo.encontra.threed.descriptors.ShapeDistributionDescriptor;
 import pt.inevo.encontra.threed.descriptors.utils.HeronFormula;
 
 import java.util.List;

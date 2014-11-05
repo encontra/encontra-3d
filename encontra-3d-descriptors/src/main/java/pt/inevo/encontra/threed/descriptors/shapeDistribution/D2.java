@@ -9,7 +9,6 @@ package pt.inevo.encontra.threed.descriptors.shapeDistribution;
 import pt.inevo.encontra.threed.Model;
 import pt.inevo.encontra.threed.Point3D;
 import pt.inevo.encontra.threed.descriptors.Histogram;
-import pt.inevo.encontra.threed.descriptors.ShapeDistributionDescriptor;
 
 import java.util.List;
 
