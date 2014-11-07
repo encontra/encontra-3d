@@ -16,6 +16,7 @@
 
   <modules>
     <module>encontra-3d-core</module>
+    <module>encontra-3d-viewer</module>
     <module>encontra-3d-descriptors</module>
   </modules>
 
