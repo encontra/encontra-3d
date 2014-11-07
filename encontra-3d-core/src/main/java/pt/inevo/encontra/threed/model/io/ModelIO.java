@@ -16,9 +16,22 @@ import java.io.IOException;
  * A class containing static convenience methods for locating ModelReaders and ModelWriters, and performing simple encoding and decoding.
  */
 public final class ModelIO extends Object {
+
+
 	public enum OutputFormat {
-		OBJ,
-		OFF
+        OBJ("obj"),
+        OFF("off");
+
+        private final String ext;
+
+        private OutputFormat(final String ext) {
+            this.ext = ext;
+        }
+
+        @Override
+        public String toString() {
+            return ext;
+        }
 	}
 	/**
 	 * Returns a BufferedModel as the result of decoding a supplied File with an ModelReader chosen automatically from among those currently registered.
@@ -46,10 +59,10 @@ public final class ModelIO extends Object {
         }
 		String absolutePath = file.getAbsolutePath();
 
-		if(extension.toString().compareToIgnoreCase("off") == 0) {
+		if(extension.toString().compareToIgnoreCase(OutputFormat.OFF.toString()) == 0) {
 			// Object File Format (OFF)
 			return (new ModelReaderOff(name, extension)).read(absolutePath);
-		} else if(extension.toString().compareToIgnoreCase("obj") == 0) {
+		} else if(extension.toString().compareToIgnoreCase(OutputFormat.OBJ.toString()) == 0) {
 			// Wavefront
 			return (new ModelReaderObj(name, extension)).read(absolutePath);
 		} else if(extension.toString().compareToIgnoreCase("mdl") == 0) {
@@ -86,4 +99,20 @@ public final class ModelIO extends Object {
 			return false;
 		}
 	}
+
+    /**
+     * Writes an image using an arbitrary ImageWriter that supports the given format to a File.
+     * If there is already a File present, its contents are discarded.
+     *
+     * @param model - a Model to be written.
+     * @param formatName - a String containing the informal name of the format.
+     * @param output - a File to be written to.
+     * @return
+     * false if no appropriate writer is found.
+     * @throws IllegalArgumentException - if any parameter is null.
+     * @throws java.io.IOException - if an error occurs during writing.
+     */
+    public static boolean write(Model model, String formatName, File output) throws IOException, IllegalArgumentException {
+        return write(model, OutputFormat.valueOf(formatName), output);
+    }
 }

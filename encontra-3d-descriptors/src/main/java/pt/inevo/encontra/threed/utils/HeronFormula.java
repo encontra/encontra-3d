@@ -4,7 +4,7 @@
  * Contributors:
  *      Pedro B. Pascoal
  */
-package pt.inevo.encontra.threed.descriptors.utils;
+package pt.inevo.encontra.threed.utils;
 
 public class HeronFormula {
 

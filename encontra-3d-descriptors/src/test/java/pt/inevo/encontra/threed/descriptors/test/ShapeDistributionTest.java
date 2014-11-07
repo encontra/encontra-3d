@@ -5,7 +5,7 @@ import pt.inevo.encontra.threed.Model;
 import pt.inevo.encontra.threed.descriptors.Histogram;
 import pt.inevo.encontra.threed.descriptors.shapeDistribution.ShapeDistributionDescriptor;
 import pt.inevo.encontra.threed.descriptors.shapeDistribution.*;
-import pt.inevo.encontra.threed.descriptors.utils.Normalize;
+import pt.inevo.encontra.threed.utils.Normalize;
 import pt.inevo.encontra.threed.model.io.ModelIO;
 
 import java.io.File;

@@ -10,12 +10,11 @@ package pt.inevo.encontra.threed.descriptors.lightfield;
 import pt.inevo.encontra.descriptors.MultiDescriptorExtractor;
 import pt.inevo.encontra.index.IndexedObject;
 import pt.inevo.encontra.threed.Model;
-import pt.inevo.encontra.threed.descriptors.utils.Normalize;
-import pt.inevo.encontra.threed.descriptors.utils.Scene;
+import pt.inevo.encontra.threed.utils.Normalize;
+import pt.inevo.encontra.threed.utils.Scene;
 import pt.inevo.encontra.threed.model.geoset.Vertex;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
 import java.util.*;
 
 
@@ -101,7 +100,7 @@ public class LightfieldExtractor extends MultiDescriptorExtractor<IndexedObject<
             if(_imageOutputEnabled) {
                 String prefix = _imageOutputDirectory + model.getName() + "_" + cam;
                 //silhouette = scene.extractSilhouette(new File(prefix + "_silhouette." + _imageOutputFormat), _imageOutputFormat);
-                silhouette = scene.extractSketch(new File(prefix + "_sketch." + _imageOutputFormat), _imageOutputFormat);
+                silhouette = scene.extractSketch();
                 //TODO: contourn = scene.extractContourn(new File(prefix + "_contourn." + format), format);
             } else {
                 silhouette = scene.extractSilhouette();
