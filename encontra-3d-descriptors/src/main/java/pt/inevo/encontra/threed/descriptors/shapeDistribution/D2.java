@@ -6,6 +6,7 @@
  */
 package pt.inevo.encontra.threed.descriptors.shapeDistribution;
 
+import pt.inevo.encontra.index.IndexedObject;
 import pt.inevo.encontra.threed.Model;
 import pt.inevo.encontra.threed.Point3D;
 import pt.inevo.encontra.threed.descriptors.Histogram;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static pt.inevo.encontra.threed.descriptors.Histogram.*;
 
-public class D2 extends ShapeDistributionDescriptor {
+public class D2<O extends IndexedObject<Long, Model>> extends ShapeDistributionDescriptor<O> {
 
 	private final int LEVEL = 256;			// default
 	private int SAMPLES = 8192; // 2^13

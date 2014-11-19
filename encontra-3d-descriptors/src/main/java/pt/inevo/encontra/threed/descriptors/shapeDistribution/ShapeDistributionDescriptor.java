@@ -14,7 +14,7 @@ import pt.inevo.encontra.threed.model.geoset.Vertex;
 
 import java.util.*;
 
-public abstract class ShapeDistributionDescriptor extends DescriptorExtractor<IndexedObject<Long, Model>, Histogram> {
+public abstract class ShapeDistributionDescriptor<O extends IndexedObject<Long, Model>> extends DescriptorExtractor<O, Histogram> {
 
     private double EPSILON = 0.0001;
     private double RAND_MAX = 0x7fff;
@@ -29,18 +29,18 @@ public abstract class ShapeDistributionDescriptor extends DescriptorExtractor<In
     @Override
     protected IndexedObject setupIndexedObject(Histogram descriptor, IndexedObject object) {
         object.setId(descriptor.getId());
-        object.setId(descriptor.getId());
         object.setValue(descriptor.getValue());
 
         return object;
     }
 
     @Override
-    public Histogram extract(IndexedObject<Long, Model> object) {
+    public Histogram extract(O object) {
         Model model = object.getValue();
 
         Histogram histogram = extract(model);
         histogram.setName(name);
+        histogram.setId(object.getId());
         return histogram;
     }
 
