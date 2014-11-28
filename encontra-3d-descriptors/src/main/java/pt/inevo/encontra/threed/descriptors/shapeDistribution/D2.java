@@ -15,14 +15,14 @@ import java.util.List;
 
 import static pt.inevo.encontra.threed.descriptors.Histogram.*;
 
-public class D2<O extends IndexedObject<Long, Model>> extends ShapeDistributionDescriptor<O> {
+public class D2<O extends IndexedObject> extends ShapeDistributionDescriptor<O> {
 
 	private final int LEVEL = 256;			// default
 	private int SAMPLES = 8192; // 2^13
 
 	// ------------------------------------------------------------------------------------
 	public D2() {
-	    super("D2");
+	    super("D2", Histogram.class, IndexedObject.class);
 	}
 
 	// ------------------------------------------------------------------------------------
@@ -32,14 +32,14 @@ public class D2<O extends IndexedObject<Long, Model>> extends ShapeDistributionD
 		// ------------------------------------------------------------------------------------
 		// D2 : Measures the distance between two random points on the surface.
 
-        double[] lst = new double[SAMPLES];
+        Double[] lst = new Double[SAMPLES];
 		Point3D p1, p2;
 		for (int j = 0; j < SAMPLES; j++) {
 
 			p1 = getRandomPoint3d(model, areaProbability);
 			p2 = getRandomPoint3d(model, areaProbability);
 
-			double distance = p1.distance(p2);
+			Double distance = p1.distance(p2);
             lst[j] = distance;
 			//System.out.print(distance);
 			//System.out.print("\n");
@@ -50,8 +50,8 @@ public class D2<O extends IndexedObject<Long, Model>> extends ShapeDistributionD
 			if(lst[i] > max) max = lst[i];
 			if(lst[i] < min) min = lst[i];
 		}
-		Histogram histogram = new Histogram(LEVEL, max, min);
-		histogram.setHistogram(lst);
+		Histogram histogram = new Histogram(LEVEL, max, min, lst);
+		//histogram.setHistogram(lst);
         return histogram;
 	}
 

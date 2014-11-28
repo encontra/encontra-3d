@@ -6,6 +6,7 @@
  */
 package pt.inevo.encontra.threed.descriptors.shapeDistribution;
 
+import pt.inevo.encontra.index.IndexedObject;
 import pt.inevo.encontra.threed.Model;
 import pt.inevo.encontra.threed.Point3D;
 import pt.inevo.encontra.threed.Vector3D;
@@ -15,19 +16,19 @@ import static pt.inevo.encontra.threed.descriptors.Histogram.*;
 
 import java.util.List;
 
-public class A3 extends ShapeDistributionDescriptor {
+public class A3<O extends IndexedObject<Long, Model>> extends ShapeDistributionDescriptor {
 
     public static final int LEVEL = 1024;
     private static int SAMPLES = 1024;
 
 	public A3() {
-	    super("A3");
+	    super("A3", Histogram.class, IndexedObject.class);
 	}
 
 	@Override
 	public Histogram extract(Model model) {
 
-        double[] lst = new double[SAMPLES];
+        Double[] lst = new Double[SAMPLES];
 
         //SurfaceArea=model.getMeshes().get(0).getSurfaceArea();
         List<TriangleAreaInfo> areaProbability = getTriangleAreaProbability(model);
@@ -64,8 +65,7 @@ public class A3 extends ShapeDistributionDescriptor {
 			if(lst[i] < min) min = lst[i];
 		}
 
-        Histogram histogram = new Histogram(LEVEL, max, 0);
-        histogram.setHistogram(lst);
+        Histogram histogram = new Histogram(LEVEL, max, 0, lst);
         return histogram;
 	}
 

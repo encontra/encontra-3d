@@ -1,38 +1,53 @@
 package pt.inevo.encontra.threed.descriptors;
 
+import org.apache.commons.lang.ArrayUtils;
 import pt.inevo.encontra.common.distance.DistanceMeasure;
 import pt.inevo.encontra.common.distance.EuclideanDistanceMeasure;
 import pt.inevo.encontra.descriptors.Descriptor;
+import pt.inevo.encontra.index.IndexedObject;
+import pt.inevo.encontra.index.Vector;
+import pt.inevo.encontra.threed.model.BufferedModel;
+import pt.inevo.encontra.threed.model.ThreedModel;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
-public class Histogram implements Descriptor {
+public class Histogram<O extends IndexedObject> extends Vector implements Descriptor, Cloneable {
 
     public static final double MAX_PIXEL = 1000;	// default
     public static final double MIN_PIXEL = -1000;	// default
 
     private final int level;
     private final double maxPixel, minPixel;
-    double[] histBin;
+    Double[] histBin;
     protected DistanceMeasure distanceMeasure = new EuclideanDistanceMeasure();
     private String name;
     private Serializable id;
 
-    public Histogram(int level) {
-        this(level, MAX_PIXEL, MIN_PIXEL);
+    public Histogram() {
+        this(-1, 0, 0, new Double[1]);
     }
 
-    public Histogram(int level, double max, double min) {
+    public Histogram(int level, Double[] featureVector) {
+        this(level, MAX_PIXEL, MIN_PIXEL, featureVector);
+    }
+
+    public Histogram(int level, double max, double min, Double[] featureVector) {
+        super(Double.class, featureVector.length);
         this.level = level;
         this.maxPixel = max;
         this.minPixel = min;
+        if (level != -1) {
+            setHistogram(featureVector);
+        }
     }
 
-    public void setHistogram(double[] featureVector) {
+    public void setHistogram(Double[] featureVector) {
 
         double interval = (maxPixel - minPixel) / level;
 
-        histBin = new double[featureVector.length];
+        histBin = ArrayUtils.toObject(new double[featureVector.length]);
 
         for(int i=0; i < featureVector.length; i++) {
             //uniformed and ununiformed
@@ -46,7 +61,7 @@ public class Histogram implements Descriptor {
             histBin[index]++;
         }
         //normalization
-        double[] histLevel = new double[level];
+        Double[] histLevel = new Double[level];
 
         histLevel[0] = minPixel;
 
@@ -56,6 +71,7 @@ public class Histogram implements Descriptor {
             histLevel[i] = histLevel[i - 1] + interval;
             histBin[i] /= featureVector.length;
         }
+        this.setValues(histBin);
     }
 
     @Override
@@ -74,17 +90,20 @@ public class Histogram implements Descriptor {
 
     @Override
     public double getNorm() {
-        return 0;
-    }
+        return super.norm(2);
+    } //This makes the index fail in btree index, as it becomes the key and only one is inserted
 
+
+    //Errors in the lucene index, as the LuceneIndexEntryFactory is dealing with strings
     @Override
-    public Object getValue() {
-        return histBin;
+    public Serializable getValue() {
+        return getStringRepresentation(histBin);
     }
 
     @Override
     public void setValue(Object o) {
-        setHistogram((double[]) o);
+        histBin = setStringRepresentation((String) o);
+        setValues(histBin);
     }
 
     @Override
@@ -96,4 +115,28 @@ public class Histogram implements Descriptor {
     public void setId(Serializable id) {
         this.id = id;
     }
+
+    public String getStringRepresentation(Double[] vec)
+    {
+        String stringValues = "";
+        for(Double val : vec)
+        {
+            stringValues += val.toString() + " ";
+        }
+        return stringValues;
+    }
+
+    public Double[] setStringRepresentation(String o)
+    {
+
+        String[] stringVec = o.split(" ");
+        Double [] vec = new Double[stringVec.length];
+        int i;
+        for (i=0; i<stringVec.length; i++)
+        {
+            vec[i] =  Double.parseDouble(stringVec[i]);
+        }
+        return vec;
+    }
+
 }

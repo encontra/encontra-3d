@@ -7,6 +7,7 @@ import pt.inevo.encontra.common.ResultSet;
 import pt.inevo.encontra.engine.SimpleEngine;
 import pt.inevo.encontra.index.IndexedObject;
 import pt.inevo.encontra.index.search.SimpleSearcher;
+import pt.inevo.encontra.lucene.index.LuceneEngine;
 import pt.inevo.encontra.lucene.index.LuceneIndex;
 import pt.inevo.encontra.nbtree.index.BTreeIndex;
 import pt.inevo.encontra.nbtree.index.NBTreeSearcher;
@@ -36,7 +37,7 @@ public class ShapeDistributionTest {
 
     protected static String MODEL = "/psb/m0.off";
     protected static String MODELS = "C:\\Users\\João\\Dropbox\\Vahid\\codebox\\model-samples";
-    /*
+
     @Test
 	public void testExtraction() {
         String modelName = getClass().getResource(MODEL).getFile();
@@ -71,8 +72,10 @@ public class ShapeDistributionTest {
         e.setObjectStorage(storage);
 
         SimpleSearcher<IndexedObject> searcher = new SimpleSearcher();
+        //NBTreeSearcher<IndexedObject> searcher = new NBTreeSearcher();
 
-        LuceneIndex index = new LuceneIndex("data/threed/indexes/lucene/d2", D2.class);
+        //BTreeIndex index = new BTreeIndex("data/threed/indexes/btree/d2", Histogram.class);
+        LuceneIndex index = new LuceneIndex("data/threed/indexes/lucene/d2", Histogram.class);
 
         searcher.setIndex(index);
         e.setSearcher("model", searcher);
@@ -87,13 +90,12 @@ public class ShapeDistributionTest {
             ThreedModel tm = loader.loadModel(f);  //Normalization - translation and scale are done in the Loader
             Normalize.translation(tm.getModel());
             Normalize.scale(tm.getModel());
-            System.out.println(e.getDescriptorExtractor());
-            System.out.println(searcher.getDescriptorExtractor());
+
             e.insert(tm);
         }
-        // only for BtreeIndex index.close();
+        //index.close();
     }
-*/
+
     @Test
     public void testSimilar() {
         EntityStorage storage = new SimpleFSObjectStorage(ThreedModel.class, "data/threed/objects/"); //Create 3dModel
@@ -101,13 +103,18 @@ public class ShapeDistributionTest {
         SimpleEngine<ThreedModel> e = new SimpleEngine<ThreedModel>();
         e.setObjectStorage(storage);
 
-        NBTreeSearcher<IndexedObject> searcher = new NBTreeSearcher();
+        //NBTreeSearcher<IndexedObject> searcher = new NBTreeSearcher();
+        SimpleSearcher<IndexedObject> searcher = new SimpleSearcher();
 
-        BTreeIndex index = new BTreeIndex("data/threed/indexes/btree/d2", D2.class);
-
+        //BTreeIndex index = new BTreeIndex<>("data/threed/indexes/btree/d2", Histogram.class);
+        LuceneIndex index = new LuceneIndex("data/threed/indexes/lucene/d2", Histogram.class);
         searcher.setIndex(index);
-        e.setSearcher("model", searcher);
+
         searcher.setDescriptorExtractor(new D2());
+        searcher.setQueryProcessor(new QueryProcessorDefaultImpl());
+        searcher.setResultProvider(new DefaultResultProvider());
+
+        e.setSearcher("model", searcher);
 
         System.out.println("Creating a knn query...");
         ThreedModelLoader loader = new ThreedModelLoader();
@@ -121,9 +128,6 @@ public class ShapeDistributionTest {
         pt.inevo.encontra.query.Path modelPath = query.from(ThreedModel.class).get("model");
         query = query.where(cb.similar(modelPath, mdl.getModel())).distinct(true).limit(20);
 
-        searcher.setQueryProcessor(new QueryProcessorDefaultImpl());
-        searcher.setResultProvider(new DefaultResultProvider());
-
         ResultSet<ThreedModel> results = e.search(query);
 
         System.out.println("Number of retrieved elements: " + results.getSize());
@@ -131,6 +135,7 @@ public class ShapeDistributionTest {
             System.out.print("Retrieved element: " + r.getResultObject().toString() + "\t");
             System.out.println("Similarity: " + r.getScore());
         }
+        //index.close();
     }
 
 }
