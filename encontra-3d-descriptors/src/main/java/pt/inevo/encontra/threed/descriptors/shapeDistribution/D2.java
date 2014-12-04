@@ -17,8 +17,8 @@ import static pt.inevo.encontra.threed.descriptors.Histogram.*;
 
 public class D2<O extends IndexedObject> extends ShapeDistributionDescriptor<O> {
 
-	private final int LEVEL = 256;			// default
-	private int SAMPLES = 8192; // 2^13
+	private final int LEVEL = 1024;
+	private int SAMPLES = 1024;
 
 	// ------------------------------------------------------------------------------------
 	public D2() {
@@ -51,7 +51,6 @@ public class D2<O extends IndexedObject> extends ShapeDistributionDescriptor<O> 
 			if(lst[i] < min) min = lst[i];
 		}
 		Histogram histogram = new Histogram(LEVEL, max, min, lst);
-		//histogram.setHistogram(lst);
         return histogram;
 	}
 

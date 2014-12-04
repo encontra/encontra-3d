@@ -1,5 +1,6 @@
 package pt.inevo.encontra.threed.model.utils;
 
+import pt.inevo.encontra.storage.ModelLoader;
 import pt.inevo.encontra.threed.model.BufferedModel;
 import pt.inevo.encontra.threed.model.ThreedModel;
 import pt.inevo.encontra.threed.model.io.ModelIO;
@@ -14,10 +15,7 @@ import java.util.List;
  * Loader for Objects of the type: ImageModel.
  * @author Ricardo
  */
-public class ThreedModelLoader implements Iterable<File> {
-
-    protected String modelsPath = "";
-    protected List<File> modelsFiles;
+public class ThreedModelLoader extends ModelLoader{
 
     public ThreedModelLoader() {
     }
@@ -26,7 +24,8 @@ public class ThreedModelLoader implements Iterable<File> {
         this.modelsPath = modelsPath;
     }
 
-    public static ThreedModel loadModel(File model) {
+    @Override
+    public ThreedModel loadModel(File model) {
 
         //for now only sets the filename
         ThreedModel ml = new ThreedModel(model.getAbsolutePath(), null);
@@ -34,16 +33,30 @@ public class ThreedModelLoader implements Iterable<File> {
         //get the description
         //TO DO - load the description from here
 
-        //get the bufferedimage
+        //get the bufferedmodel
         try {
             BufferedModel bufMdl = ModelIO.read(model);
-            ml.setModel(bufMdl);
+
+            ml.setThreedmodel(bufMdl);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
         return ml;
     }
+
+    @Override
+    public BufferedModel loadBuffered(File model) {
+
+        BufferedModel bufMdl=null;
+        try {
+            bufMdl = ModelIO.read(model);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return bufMdl;
+    }
+
 
     public List<ThreedModel> getModels(String path) {
         File root = new File(path);
@@ -64,18 +77,5 @@ public class ThreedModelLoader implements Iterable<File> {
         String[] extensions = {"off","obj","mdl"};
 
         modelsFiles = FileUtil.findFilesRecursively(root, extensions);
-    }
-
-    public void load() {
-        load(modelsPath);
-    }
-
-    public List<ThreedModel> getModels() {
-        return getModels(modelsPath);
-    }
-
-    @Override
-    public Iterator<File> iterator() {
-        return modelsFiles.iterator();
     }
 }

@@ -11,6 +11,7 @@ import pt.inevo.encontra.threed.utils.HeronFormula;
 import pt.inevo.encontra.threed.model.geoset.Face;
 import pt.inevo.encontra.threed.model.geoset.Mesh;
 import pt.inevo.encontra.threed.model.geoset.Vertex;
+import pt.inevo.encontra.threed.utils.Normalize;
 
 import java.util.*;
 
@@ -40,6 +41,9 @@ public abstract class ShapeDistributionDescriptor<O extends IndexedObject> exten
     @Override
     public Histogram extract(O object) {
         Model model = (Model) object.getValue();
+
+        Normalize.translation(model);
+        Normalize.scale(model);
 
         Histogram histogram = extract(model);
         histogram.setName(name);

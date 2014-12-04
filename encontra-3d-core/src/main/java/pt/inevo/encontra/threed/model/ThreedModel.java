@@ -8,14 +8,14 @@ public class ThreedModel implements IEntity<Long> {
 
     private Long id;
     private String filename;
-    private transient BufferedModel model;
+    private transient BufferedModel threedmodel;
 
     public ThreedModel() {
     }
 
     public ThreedModel(String filename, BufferedModel model) {
         this.filename = filename;
-        this.model = model;
+        this.threedmodel = model;
     }
 
     @Override
@@ -38,12 +38,12 @@ public class ThreedModel implements IEntity<Long> {
     }
 
     @Indexed
-    public BufferedModel getModel() {
-        return model;
+    public BufferedModel getThreedmodel() {
+        return threedmodel;
     }
 
-    public void setModel(BufferedModel model) {
-        this.model = model;
+    public void setThreedmodel(BufferedModel model) {
+        this.threedmodel = model;
     }
 
     @Override

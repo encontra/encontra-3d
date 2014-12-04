@@ -20,7 +20,6 @@ public class Histogram<O extends IndexedObject> extends Vector implements Descri
 
     private final int level;
     private final double maxPixel, minPixel;
-    Double[] histBin;
     protected DistanceMeasure distanceMeasure = new EuclideanDistanceMeasure();
     private String name;
     private Serializable id;
@@ -47,7 +46,7 @@ public class Histogram<O extends IndexedObject> extends Vector implements Descri
 
         double interval = (maxPixel - minPixel) / level;
 
-        histBin = ArrayUtils.toObject(new double[featureVector.length]);
+        Double[] histBin = ArrayUtils.toObject(new double[featureVector.length]);
 
         for(int i=0; i < featureVector.length; i++) {
             //uniformed and ununiformed
@@ -91,18 +90,17 @@ public class Histogram<O extends IndexedObject> extends Vector implements Descri
     @Override
     public double getNorm() {
         return super.norm(2);
-    } //This makes the index fail in btree index, as it becomes the key and only one is inserted
-
+    }
 
     //Errors in the lucene index, as the LuceneIndexEntryFactory is dealing with strings
     @Override
     public Serializable getValue() {
-        return getStringRepresentation(histBin);
+        return getStringRepresentation((Double[]) getValues());
     }
 
     @Override
     public void setValue(Object o) {
-        histBin = setStringRepresentation((String) o);
+        Double[] histBin = setStringRepresentation((String) o);
         setValues(histBin);
     }
 

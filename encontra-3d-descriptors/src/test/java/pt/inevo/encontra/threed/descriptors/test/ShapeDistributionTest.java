@@ -65,7 +65,6 @@ public class ShapeDistributionTest {
     @Test
     public void testEngineProcess() {
 
-        //Mudar para SimpleFSObjectStorage
         EntityStorage storage = new SimpleFSObjectStorage(ThreedModel.class, "data/threed/objects/"); //Create 3dModel
 
         SimpleEngine<ThreedModel> e = new SimpleEngine<ThreedModel>();
@@ -78,7 +77,7 @@ public class ShapeDistributionTest {
         LuceneIndex index = new LuceneIndex("data/threed/indexes/lucene/d2", Histogram.class);
 
         searcher.setIndex(index);
-        e.setSearcher("model", searcher);
+        e.setSearcher("threedmodel", searcher);
         searcher.setDescriptorExtractor(new D2());
 
         ThreedModelLoader loader = new ThreedModelLoader(MODELS);
@@ -88,8 +87,6 @@ public class ShapeDistributionTest {
         for (int i = 0; it.hasNext(); i++) {
             File f = it.next();
             ThreedModel tm = loader.loadModel(f);  //Normalization - translation and scale are done in the Loader
-            Normalize.translation(tm.getModel());
-            Normalize.scale(tm.getModel());
 
             e.insert(tm);
         }
@@ -114,19 +111,19 @@ public class ShapeDistributionTest {
         searcher.setQueryProcessor(new QueryProcessorDefaultImpl());
         searcher.setResultProvider(new DefaultResultProvider());
 
-        e.setSearcher("model", searcher);
+        e.setSearcher("threedmodel", searcher);
 
         System.out.println("Creating a knn query...");
         ThreedModelLoader loader = new ThreedModelLoader();
         ThreedModel mdl = loader.loadModel(new File(getClass().getResource(MODEL).getFile()));
-        Normalize.translation(mdl.getModel());
-        Normalize.scale(mdl.getModel());
+        Normalize.translation(mdl.getThreedmodel());
+        Normalize.scale(mdl.getThreedmodel());
 
 
         CriteriaBuilderImpl cb = new CriteriaBuilderImpl();
         CriteriaQuery<ThreedModel> query = cb.createQuery(ThreedModel.class);
-        pt.inevo.encontra.query.Path modelPath = query.from(ThreedModel.class).get("model");
-        query = query.where(cb.similar(modelPath, mdl.getModel())).distinct(true).limit(20);
+        pt.inevo.encontra.query.Path modelPath = query.from(ThreedModel.class).get("threedmodel");
+        query = query.where(cb.similar(modelPath, mdl.getThreedmodel())).distinct(true).limit(20);
 
         ResultSet<ThreedModel> results = e.search(query);
 
