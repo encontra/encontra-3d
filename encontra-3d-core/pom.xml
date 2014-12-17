@@ -17,6 +17,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>pt.inevo.encontra</groupId>
+            <artifactId>encontra-core-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pt.inevo.encontra</groupId>
+            <artifactId>encontra-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jogamp.jogl</groupId>
             <artifactId>jogl-all-main</artifactId>
         </dependency>

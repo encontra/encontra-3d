@@ -22,6 +22,11 @@
         </dependency>
         <dependency>
             <groupId>pt.inevo.encontra</groupId>
+            <artifactId>encontra-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pt.inevo.encontra</groupId>
             <artifactId>encontra-3d-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
