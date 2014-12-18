@@ -48,7 +48,7 @@ public class ThreedModel implements IEntity<Long> {
 
     @Override
     public String toString() {
-        return "TestModel{"
+        return "{"
                 + "id=" + id
                 + ", title='" + filename + '\''
                 + '}';
