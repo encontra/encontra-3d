@@ -68,7 +68,11 @@ public final class ModelIO extends Object {
 		} else if(extension.toString().compareToIgnoreCase("mdl") == 0) {
 			// MDL Blizzard Entertainment 3D model file
 			return (new ModelReaderMdl(name, extension)).read(absolutePath);
-		} else {
+		} else if(extension.toString().compareToIgnoreCase("stl") == 0) {
+            // STL 3D model file
+            return (new ModelReaderStl(name, extension)).read(absolutePath);
+        }
+        else {
 			throw new IOException("ModelIO: file format not recognized");
 		}
 	}
