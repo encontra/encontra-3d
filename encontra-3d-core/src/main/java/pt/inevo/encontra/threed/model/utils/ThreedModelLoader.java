@@ -60,7 +60,7 @@ public class ThreedModelLoader extends ModelLoader{
 
     public List<ThreedModel> getModels(String path) {
         File root = new File(path);
-        String[] extensions = {"off","obj","mdl"};
+        String[] extensions = {"off","obj","mdl","stl"};
 
         List<File> modelFiles = FileUtil.findFilesRecursively(root, extensions);
         List<ThreedModel> models = new ArrayList<ThreedModel>();
@@ -74,7 +74,7 @@ public class ThreedModelLoader extends ModelLoader{
 
     public void load(String path) {
         File root = new File(path);
-        String[] extensions = {"off","obj","mdl"};
+        String[] extensions = {"off","obj","mdl","stl"};
 
         modelsFiles = FileUtil.findFilesRecursively(root, extensions);
     }
